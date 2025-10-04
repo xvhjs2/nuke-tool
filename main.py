@@ -172,7 +172,7 @@ def selbot():
         elif valid:
             Logging.success('Valid token')
             cp = botinfo(token)
-            Nukebot.setb(token, cp['id'], cp['username'] + '#' + cp['discriminator'], f'https://discord.com/oauth2/authorize?client_id={cp["id"]}&permissions=8&integration_type=0&scope=bot')
+            Nukebot.setb(token, cp['id'], cp['username'] + '#' + cp['discriminator'], f'https://discord.com/oauth2/authorize?client_id={cp["id"]}&permissions=2251817798991934&integration_type=0&scope=bot')
             time.sleep(1.5)
             return token
 
@@ -218,4 +218,5 @@ def main():
             interface()
 
 if __name__ == '__main__':
+
     main()
