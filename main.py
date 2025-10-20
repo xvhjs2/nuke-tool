@@ -82,7 +82,7 @@ def botinfo(tkn):
 def interface():
     bnr = Ascii().ascii()
 
-    nuke = Nuke(tkn=Nukebot.tkn, server=Nukebot.server, serverid=Nukebot.serverid, wbh=':3', embeds=useembed, ban=ban, webhook=usewebhook)
+    nuke = Nuke(tkn=Nukebot.tkn, server=Nukebot.server, serverid=Nukebot.serverid, wbh='labubu fonk', embeds=useembed, ban=ban, webhook=usewebhook)
 
     ctypes.windll.kernel32.SetConsoleTitleW(f'xvhjs dih | {Nukebot.name} | {Nukebot.server}')
     bnr += Options().options()
@@ -92,7 +92,7 @@ def interface():
     
     option = Logging.inp('Menu', 'Option')
     id = Nukebot.serverid
-    if option == '1':
+    if option == '67':
         nuke.DChannels(id)
         time.sleep(1)
 
@@ -110,8 +110,20 @@ def interface():
             Logging.inp2('Press enter')
             cls()
             interface()
+
+    elif option == '1':
+        conf = Logging.inp('DChannels', 'Confirm (type y or n)')
+        if conf.lower() == 'y':
+            nuke.DChannels(id)
+            time.sleep(1)
+            Logging.inp2('Press enter')
+            cls()
+            interface()
+        else:
+            cls()
+            interface()
+
     elif option == '2':
-        
         name = Logging.inp('Server', 'Name')
         icon = Logging.inp('Icon', 'Image')
         nuke.EditServer(name, icon)
@@ -119,15 +131,46 @@ def interface():
         Logging.inp2('Press enter')
         cls()
         interface()
-
+    
     elif option == '3':
+        name = Logging.inp('CChannels', 'Name')
+        amount = int(Logging.inp('CChannels', 'Amount'))
+        nuke.CChannels2(id, name, amount)
+        time.sleep(1)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+
+    elif option == '4':
+        msg = Logging.inp('Spam', 'Message')
+        amount = int(Logging.inp('CChannels', 'Amount'))
+        nuke.Spam2(msg, amount)
+        time.sleep(1)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+
+    elif option == '5':
+        msg = Logging.inp('Spam', 'Message')
+        amount = int(Logging.inp('CChannels', 'Amount'))
+        nuke.Spam2(msg, amount)
+        time.sleep(1)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+
+    elif option == '21':
         cls()
         gl = selguild(Nukebot.tkn)
         if gl:
             interface()
-    elif option == '4':
+
+    elif option == '41':
         cls()
         main()
+
+    elif option == '100':
+        exit()
 
 def getguilds(tkn):
     pth = os.path.abspath('tmp/guilds.txt')
