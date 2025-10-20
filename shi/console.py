@@ -82,11 +82,15 @@ class Logging:
 class Options:
     def options(self):
         self.opt = '''
-            [1] Nuke the server
-            [2] Edit the server
-            [3] Select a different server
-            [4] Use a different bot
-            [5] Exit
+            [01] Delete all channels
+            [02] Edit the server
+            [03] Create channels
+            [04] Spam messages
+            [05] Spam messages with webhooks
+            [21] Select a different server
+            [41] Use a different bot
+            [67] Full nuke
+            [100] Exit
         '''
         self.opti = Colorate.Horizontal(Colors.blue_to_purple, self.opt, 1)
         return self.opti
