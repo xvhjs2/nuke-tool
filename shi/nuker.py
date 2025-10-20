@@ -104,6 +104,11 @@ class Nuke:
             t.start()
             time.sleep(0.01)
 
+    def CChannels2(self, serverid, name, amount):
+        for _ in range(amount):
+            t = threading.Thread(target=self.createchannel, args=(serverid, name))
+            t.start()
+            time.sleep(0.01)
     
     def sendmessage(self, chid, msg, amount):
         payload = {'content': msg}
@@ -153,6 +158,19 @@ class Nuke:
             t.join()
         
         return True
+        
+    def Spam2(self, msg, amount):
+        channels = self.getchannels(self.serverid)
+        threads = []
+
+        for channel in channels:
+            t = threading.Thread(target=self.sendmessage, args=(channel['id'], msg, amount,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
+        
+        for t in threads:
+            t.join()
         
                     
     def SpamWebhooks(self):
