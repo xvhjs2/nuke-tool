@@ -85,10 +85,11 @@ class Options:
             [01] Delete all channels            [07] Give admin
             [02] Edit the server                [21] Select a different server
             [03] Create channels                [41] Use a different bot
-            [04] Spam messages                  [67] Full nuke
+            [04] Spam messages                  [67] Classic nuke
             [05] Webhook spam                   [100] Exit
             [06] Create roles
 
         '''
         self.opti = Colorate.Horizontal(Colors.blue_to_purple, self.opt, 1)
         return self.opti
+
