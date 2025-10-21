@@ -143,7 +143,7 @@ def interface():
 
     elif option == '4':
         msg = Logging.inp('Spam', 'Message')
-        amount = int(Logging.inp('CChannels', 'Amount'))
+        amount = int(Logging.inp('Spam', 'Amount'))
         nuke.Spam2(msg, amount)
         time.sleep(1)
         Logging.inp2('Press enter')
@@ -151,14 +151,27 @@ def interface():
         interface()
 
     elif option == '5':
-        msg = Logging.inp('Spam', 'Message')
-        amount = int(Logging.inp('CChannels', 'Amount'))
-        nuke.Spam2(msg, amount)
+        nuke.SpamWebhooks2()
         time.sleep(1)
         Logging.inp2('Press enter')
         cls()
         interface()
 
+    elif option == '6':
+        name = Logging.inp('Roles', 'Name')
+        amount = int(Logging.inp('Roles', 'Amount'))
+        nuke.CRoles(id, name, amount)
+        Logging.inp2('Press enter')
+
+        cls()
+        interface()
+
+    elif option == '7':
+        nuke.GiveAdmin(id)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+        
     elif option == '21':
         cls()
         gl = selguild(Nukebot.tkn)
