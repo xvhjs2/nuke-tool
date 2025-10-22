@@ -167,7 +167,9 @@ def interface():
         interface()
 
     elif option == '7':
-        nuke.GiveAdmin(id)
+        userid = Logging.inp('Admin', 'ID')
+
+        nuke.GiveAdmin(id, userid)
         Logging.inp2('Press enter')
         cls()
         interface()
