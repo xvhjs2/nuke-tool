@@ -27,7 +27,8 @@ except:
         json.dump({
             "ban": False,
             "webhook": False,
-            "embed": False
+            "embed": False,
+            "days": 28
         }, f, indent=4)
     with open(config, 'r', encoding='utf-8') as f:
         conf = json.load(f)
@@ -37,6 +38,7 @@ os.makedirs('tmp', exist_ok=True)
 ban = conf.get('ban', False)
 usewebhook = conf.get('webhook', False)
 useembed = conf.get('embed', False)
+timeday = conf.get('days', 28)
 
 class Nukebot:
     def __init__(self):
@@ -174,6 +176,38 @@ def interface():
         cls()
         interface()
         
+        
+    elif option == '8':
+
+        nuke.BanAll()
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+
+    elif option == '9':
+        nuke.KickAll()
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+    
+    elif option == '10':
+        nuke.GiveEveryoneAdmin(id)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+
+    elif option == '11':
+        nuke.DMAll()
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+
+    elif option == '12':
+        nuke.TimeoutAll(timeday)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+
     elif option == '21':
         cls()
         gl = selguild(Nukebot.tkn)
