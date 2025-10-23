@@ -82,12 +82,12 @@ class Logging:
 class Options:
     def options(self):
         self.opt = '''
-            [01] Delete all channels            [07] Give admin                     [41] Use a different bot
-            [02] Edit the server                [08] Ban everyone                   [67] Classic nuke
-            [03] Create channels                [09] Kick everyone                  [100] Exit
-            [04] Spam messages                  [10] Give everyone admin
+            [01] Delete all channels            [07] Give admin                     [21] Select a different server
+            [02] Edit the server                [08] Ban everyone                   [41] Use a different bot
+            [03] Create channels                [09] Kick everyone                  [67] Classic nuke
+            [04] Spam messages                  [10] Give everyone admin            [100] Exit
             [05] Webhook spam                   [11] DM everyone
-            [06] Create roles                   [21] Select a different server
+            [06] Create roles                   [12] Time out everyone
 
         '''
         self.opti = Colorate.Horizontal(Colors.blue_to_purple, self.opt, 1)
