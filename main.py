@@ -11,6 +11,7 @@ from shi.nuker import *
 
 def cls():
     os.system('cls')
+open('shi/exids.txt', 'w')
 
 config = 'config.json'
 
@@ -325,3 +326,4 @@ def main():
 if __name__ == '__main__':
 
     main()
+
