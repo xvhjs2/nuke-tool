@@ -541,3 +541,6 @@ class Nuke:
                 
         except Exception as e:
             Logging.fail(f'Failed to disable community mode: {e}')
+            
+    def AntiNukeBypass(self, msg):
+        Logging.info('WIP')
