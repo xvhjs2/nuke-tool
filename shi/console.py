@@ -85,9 +85,9 @@ class Options:
             [01] Delete all channels            [07] Give admin                     [13] Disable community
             [02] Edit the server                [08] Ban everyone                   [21] Select a different server
             [03] Create channels                [09] Kick everyone                  [41] Use a different bot
-            [04] Spam messages                  [10] Give everyone admin            [67] Classic nuke
-            [05] Webhook spam                   [11] DM everyone                    [100] Exit
-            [06] Create roles                   [12] Time out everyone
+            [04] Spam messages                  [10] Give everyone admin            [61] Bypass anti nuke
+            [05] Webhook spam                   [11] DM everyone                    [67] Classic nuke
+            [06] Create roles                   [12] Time out everyone              [100] Exit
 
         '''
         self.opti = Colorate.Horizontal(Colors.blue_to_purple, self.opt, 1)
