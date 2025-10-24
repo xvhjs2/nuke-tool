@@ -124,7 +124,7 @@ class Nuke:
                 elif r.status_code == 429:
                     Logging.info('Rate limit while trying to send a message')
                 else:
-                    print('Failed to send message')
+                    Logging.fail('Failed to send message')
             except:
                 pass
 
@@ -193,7 +193,7 @@ class Nuke:
         elif any(word in sername for word in betrayal):
             msg = 'i feel so bad im not even gonna ping'
         elif any(word in sername for word in mibu):
-            msg = "||@everyone|| George Floyd's last words.... I CANT BREATHE https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA_eX7i1SayGHRUjWZ0sXLJm-JGbt_LlHZKw&s https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_6IaXU8yqoQHWUtpKhN9D77f68Ij8mt5d6w&s https://i1.sndcdn.com/avatars-zaCUjzWzmpQ5cqzn-4EqdxQ-t1080x1080.jpg https://pbs.twimg.com/media/GSLgbVVWAAA-9hv?format=jpg https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5HJnR_06EWomHKncyZL_Q223mmmUTr3MYfw&s"
+            msg = "||@everyone|| JUSTICE FOR JOSHUA YOU M*BU FUCKS WILL PAY FOR WHAT YOU DID TO HIM"
         elif any(word in sername for word in rblx):
             msg = '||@everyone|| https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRhpj1yM8IEjc05Z7yT6l4w74DOo7aQv02mQ&s'
         elif any(word in sername for word in sigma):
