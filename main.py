@@ -29,7 +29,7 @@ except:
             "ban": False,
             "webhook": False,
             "embed": False,
-            "days": 28
+            "days": 28 #pretty sure max is 28 days
         }, f, indent=4)
     with open(config, 'r', encoding='utf-8') as f:
         conf = json.load(f)
@@ -326,4 +326,5 @@ def main():
 if __name__ == '__main__':
 
     main()
+
 
