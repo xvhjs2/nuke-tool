@@ -11,7 +11,6 @@ from shi.nuker import *
 
 def cls():
     os.system('cls')
-open('shi/exids.txt', 'w')
 
 config = 'config.json'
 
@@ -29,7 +28,7 @@ except:
             "ban": False,
             "webhook": False,
             "embed": False,
-            "days": 28 #pretty sure max is 28 days
+            "days": 28
         }, f, indent=4)
     with open(config, 'r', encoding='utf-8') as f:
         conf = json.load(f)
@@ -225,6 +224,12 @@ def interface():
         cls()
         main()
 
+    elif option == '61':
+        nuke.AntiNukeBypass(msg)
+        Logging.inp2('Press enter')
+        cls()
+        main()
+
     elif option == '100':
         exit()
     
@@ -326,5 +331,3 @@ def main():
 if __name__ == '__main__':
 
     main()
-
-
