@@ -229,7 +229,7 @@ def interface():
         nuke.AntiNukeBypass(msg)
         Logging.inp2('Press enter')
         cls()
-        main()
+        interface()
 
     elif option == '100':
         exit()
@@ -332,4 +332,5 @@ def main():
 if __name__ == '__main__':
 
     main()
+
 
