@@ -197,13 +197,19 @@ def interface():
         interface()
 
     elif option == '11':
-        nuke.DMAll()
+        mg = Logging.inp('DM', 'Message')
+        nuke.DMAll(mg)
         Logging.inp2('Press enter')
         cls()
         interface()
 
     elif option == '12':
         nuke.TimeoutAll(timeday)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+    elif option == '13':
+        nuke.disable_community()
         Logging.inp2('Press enter')
         cls()
         interface()
@@ -220,6 +226,13 @@ def interface():
 
     elif option == '100':
         exit()
+    
+    else:
+        Logging.fail('Choose an option')
+        time.sleep(1)
+        cls()
+        interface()
+
 
 def getguilds(tkn):
     pth = os.path.abspath('tmp/guilds.txt')
