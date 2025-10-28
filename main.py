@@ -153,7 +153,10 @@ def interface():
         interface()
 
     elif option == '5':
-        nuke.SpamWebhooks2()
+        msg = Logging.inp('Spam', 'Message')
+        amount = int(Logging.inp('Spam', 'Amount'))
+
+        nuke.SpamWebhooks2(msg, amount)
         time.sleep(1)
         Logging.inp2('Press enter')
         cls()
@@ -225,8 +228,12 @@ def interface():
         main()
 
     elif option == '61':
-        msg = ''
-        nuke.AntiNukeBypass(msg)
+        name = Logging.inp('Bypass', 'Name')
+        msg = Logging.inp('Bypass', 'Message')
+        amount = int(Logging.inp('Bypass', 'Amount'))
+        print('Open antinuketypes.txt if you need help')
+        ty = int(Logging.inp('Bypass', 'Type'))
+        nuke.AntiNukeBypass(name, msg, amount, antype=ty)
         Logging.inp2('Press enter')
         cls()
         interface()
@@ -332,5 +339,3 @@ def main():
 if __name__ == '__main__':
 
     main()
-
-
