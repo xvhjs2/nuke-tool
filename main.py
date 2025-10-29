@@ -303,8 +303,8 @@ def selguild(token):
     ctypes.windll.kernel32.SetConsoleTitleW(f'xvhjs dih | {Nukebot.name} | Selecting a server')
     while True:
         mcb(lines=1)
-        print(Ascii().ascii2(f'TIP: you can type "fnt" for a server id or add the bot using this link: \n{Nukebot.invite}'))
-
+        print(Ascii().ascii2(f'TIP: you can type "fnt" for a server id or add the bot using this link:'))
+        print(Nukebot.invite)
         cbb()
 
         g = Logging.inp('Login', 'Server ID')
@@ -339,3 +339,4 @@ def main():
 if __name__ == '__main__':
 
     main()
+
