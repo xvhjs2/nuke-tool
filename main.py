@@ -16,7 +16,7 @@ config = 'config.json'
 
 cls()
 bnr = Ascii().ascii()
-bnr2 = Ascii().ascii2('     TIP: you can type "fnt" for a server id ')
+bnr2 = Ascii().ascii2('     TIP: you can type "fnt" for the server list ')
 
 try:
     with open(config, 'r', encoding='utf-8') as f:
@@ -339,4 +339,5 @@ def main():
 if __name__ == '__main__':
 
     main()
+
 
