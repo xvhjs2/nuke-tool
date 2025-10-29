@@ -5,7 +5,7 @@ i actively update this. if there are any bugs just report them in the issues sec
 planned features
 - member scraping
 - bot saving
-- thread spamming
+- thread/forum spamming
 - embed support
 - banning on classic nuke
 - customizable classic nuke
