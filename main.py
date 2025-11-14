@@ -37,7 +37,6 @@ os.makedirs('tmp', exist_ok=True)
 
 ban = conf.get('ban', False)
 usewebhook = conf.get('webhook', False)
-useembed = conf.get('embed', False)
 timeday = conf.get('days', 28)
 
 class Nukebot:
@@ -84,7 +83,7 @@ def botinfo(tkn):
 def interface():
     bnr = Ascii().ascii()
 
-    nuke = Nuke(tkn=Nukebot.tkn, server=Nukebot.server, serverid=Nukebot.serverid, wbh='labubu fonk', embeds=useembed, ban=ban, webhook=usewebhook)
+    nuke = Nuke(tkn=Nukebot.tkn, server=Nukebot.server, serverid=Nukebot.serverid, wbh='dih', embeds=useembed, ban=ban, webhook=usewebhook)
 
     ctypes.windll.kernel32.SetConsoleTitleW(f'xvhjs dih | {Nukebot.name} | {Nukebot.server}')
     bnr += Options().options()
@@ -339,6 +338,3 @@ def main():
 if __name__ == '__main__':
 
     main()
-
-
-
