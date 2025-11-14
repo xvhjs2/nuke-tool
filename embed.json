@@ -1,0 +1,24 @@
+{
+  "embeds": [
+    {
+      "id": 712104130,
+      "description": "enjoy this gif of jeffery epstein",
+      "fields": [],
+      "author": {
+        "name": "nuked",
+        "icon_url": "https://avatars.githubusercontent.com/u/201364482?v=4"
+      },
+      "title": "Your server got nuked",
+      "image": {
+        "url": "https://media.tenor.com/DbI3QEvwe84AAAAM/jeffrey-epstein-sigma.gif"
+      },
+      "footer": {
+        "text": "have fun with your nuked server lmfao ",
+        "icon_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtvjOOAjwn2EHz5VzgbYbCIRT7phazqKAh2w&s"
+      }
+    }
+  ],
+  "components": [],
+  "actions": {},
+  "flags": 0
+}
