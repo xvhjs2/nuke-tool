@@ -215,7 +215,14 @@ def interface():
         Logging.inp2('Press enter')
         cls()
         interface()
-
+    
+    elif option == '14':
+        nick = Logging.inp('Nick', 'Nickname')
+        nuke.NickAll(nick)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+    
     elif option == '21':
         cls()
         gl = selguild(Nukebot.tkn)
