@@ -1,6 +1,7 @@
 this lwk isn't good ngl
 
 if there are any bugs just report them in the issues section 
+if it's crossed out then that means i've finished adding the features
 
 planned features
 - ~~member scraping~~
