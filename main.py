@@ -113,7 +113,7 @@ def interface():
             interface()
 
     elif option == '1':
-        conf = Logging.inp('DChannels', 'Confirm (type y or n)')
+        conf = Logging.inp('DChannels', 'Confirm')
         if conf.lower() == 'y':
             nuke.DChannels(id)
             time.sleep(1)
@@ -222,7 +222,47 @@ def interface():
         Logging.inp2('Press enter')
         cls()
         interface()
+        
+    elif option == '15':
+        id = Logging.inp('Unban', 'ID')
+        nuke.unban(id)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+        
+    elif option == '16':
+        conf = Logging.inp('Unban', 'Confirm')
+        if conf.lower() == 'y':
+            nuke.UnbanAll()
+            Logging.inp2('Press enter')
+            cls()
+            interface()
+            
+    elif option == '17':
+        role = Logging.inp('Roles', 'ID')
+        nuke.deleterole(role)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+
+    elif option == '18':
+        nuke.DeleteRoles()
+        Logging.inp2('Press enter')
+        cls()
+        interface()
     
+    elif option == '19':
+        nuke.scrapemembers()
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+    
+    elif option == '20':
+        nuke.DeleteEmojis()
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+        
     elif option == '21':
         cls()
         gl = selguild(Nukebot.tkn)
