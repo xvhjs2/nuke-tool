@@ -811,3 +811,56 @@ class Nuke:
             time.sleep(0.01)
         for t in threads:
             t.join()
+
+    def RenameBot(self, name):
+        payload = {'username': name}
+        try:
+            r = requests.patch(f'https://discord.com/api/v9/users/@me', json=payload, headers=self.headers)
+            if r.status_code in [200, 201, 204]:
+                Logging.success('Successfully renamed the bot to %s' % name)
+            elif r.status_code == 429:
+                Logging.info(f'Rate limit response while trying to rename bot {r.text}')
+            else:
+                Logging.fail(f'Failed to rename bot: {r.status_code} - {r.text}')
+                
+        except Exception as e:
+            Logging.fail(f'Failed to rename bot: {e}')
+            
+    def ChangeBotPfp(self, icon):
+        payload = {'avatar': icon}
+        if icon == 'path':
+            with open('shi/icon.png', 'rb') as f:
+                ic = base64.b64encode(f.read()).decode('utf-8')
+                icon = 'data:image/png;base64,' + ic
+                payload['avatar'] = icon
+
+        elif icon:
+            if 'https://' in icon:
+                try:
+                    im = requests.get(icon, headers={'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'})
+                    if im.status_code != 200:
+                        print(im.text)
+
+                        Logging.fail('Failed to fetch image')
+                    else:
+                        Logging.success('Successfully fetched image')
+                        ic = im.content
+                        ico = base64.b64encode(ic).decode('utf-8')
+                        icon = 'data:image/png;base64,' + ico
+                        payload['avatar'] = icon
+
+                except:
+                    pass
+            else:
+                Logging.fail('No image URL')
+        try:
+            r = requests.patch(f'https://discord.com/api/v9/users/@me', json=payload, headers=self.headers)
+            if r.status_code in [200, 201, 204]:
+                Logging.success('Successfully changed the bot\'s pfp')
+            elif r.status_code == 429:
+                Logging.info(f'Rate limit response while trying to change the bot\'s pfp {r.text}')
+            else:
+                Logging.fail(f'Failed to rename bot: {r.status_code} - {r.text}')
+                
+        except Exception as e:
+            Logging.fail(f'Failed to rename bot: {e}')
