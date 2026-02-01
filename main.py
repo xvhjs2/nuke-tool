@@ -14,6 +14,7 @@ def cls():
 
 config = 'config.json'
 
+os.system('mode con: cols=150 lines=30')
 cls()
 bnr = Ascii().ascii()
 bnr2 = Ascii().ascii2('     TIP: you can type "fnt" for a server list ')
@@ -268,6 +269,18 @@ def interface():
         gl = selguild(Nukebot.tkn)
         if gl:
             interface()
+    elif option == '22':
+        name = Logging.inp('Modify', 'Name')
+        nuke.RenameBot(name)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
+    elif option == '23':
+        icon = Logging.inp('Modify', 'PFP')
+        nuke.ChangeBotPfp(icon)
+        Logging.inp2('Press enter')
+        cls()
+        interface()
 
     elif option == '41':
         cls()
