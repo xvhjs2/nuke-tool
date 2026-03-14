@@ -129,6 +129,7 @@ def interface():
         name = Logging.inp('Server', 'Name')
         icon = Logging.inp('Icon', 'Image')
         nuke.EditServer(name, icon)
+        Nukebot.server = name
         time.sleep(1)
         Logging.inp2('Press enter')
         cls()
@@ -296,6 +297,29 @@ def interface():
         Logging.inp2('Press enter')
         cls()
         interface()
+
+    elif option == '69':
+        message = Logging.inp('Nuke', 'Message')
+        amount = Logging.inp('Nuke', 'Amount')
+        channelname = Logging.inp('Nuke', 'Channel Name')
+        channelamount = Logging.inp('Nuke', 'Channel Amount')
+        nuke.DChannels(id)
+        time.sleep(1)
+
+        nuke.CChannels2(id, channelname, int(channelamount))
+        time.sleep(0.5)
+        if usewebhook:
+            x = nuke.SpamWebhooks2(message, int(amount))
+            time.sleep(1)
+            Logging.inp2('Press enter')
+            cls()
+            interface()
+        else:
+            x = nuke.Spam2(message, int(amount))
+            time.sleep(1)
+            Logging.inp2('Press enter')
+            cls()
+            interface()
 
     elif option == '100':
         exit()
