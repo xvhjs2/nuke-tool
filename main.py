@@ -117,7 +117,6 @@ def interface():
         conf = Logging.inp('DChannels', 'Confirm')
         if conf.lower() == 'y':
             nuke.DChannels(id)
-            time.sleep(1)
             Logging.inp2('Press enter')
             cls()
             interface()
@@ -130,7 +129,6 @@ def interface():
         icon = Logging.inp('Icon', 'Image')
         nuke.EditServer(name, icon)
         Nukebot.server = name
-        time.sleep(1)
         Logging.inp2('Press enter')
         cls()
         interface()
@@ -139,7 +137,6 @@ def interface():
         name = Logging.inp('CChannels', 'Name')
         amount = int(Logging.inp('CChannels', 'Amount'))
         nuke.CChannels2(id, name, amount)
-        time.sleep(1)
         Logging.inp2('Press enter')
         cls()
         interface()
@@ -148,7 +145,6 @@ def interface():
         msg = Logging.inp('Spam', 'Message')
         amount = int(Logging.inp('Spam', 'Amount'))
         nuke.Spam2(msg, amount)
-        time.sleep(1)
         Logging.inp2('Press enter')
         cls()
         interface()
@@ -158,7 +154,6 @@ def interface():
         amount = int(Logging.inp('Spam', 'Amount'))
 
         nuke.SpamWebhooks2(msg, amount)
-        time.sleep(1)
         Logging.inp2('Press enter')
         cls()
         interface()
@@ -326,7 +321,6 @@ def interface():
     
     else:
         Logging.fail('Choose an option')
-        time.sleep(1)
         cls()
         interface()
 
