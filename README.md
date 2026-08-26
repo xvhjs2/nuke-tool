@@ -3,12 +3,13 @@ this lwk isn't good ngl
 Recommended Python version: 3.11.x
 
 if there are any bugs just report them in the issues section <br>
-if it's crossed out then that means i've finished adding the features
 
 planned features
+If it's crossed out then that means I've added these features already
+
 - ~~member scraping~~
 - bot saving
-- thread spamming (not spamming with threading)
+- spam create threads
 - ~~embed support~~
 - banning on classic nuke
 - customizable classic nuke
