@@ -15,3 +15,8 @@ planned features
 - ~~deleting~~/creating emojis, stickers and soundboard sound effects
 - ~~deleting roles~~
 - and more
+
+
+changelogs 
+2026-08-26:
+- rebranded the tool to "Sonar" because some random kid decided to use the old tool's banner as their pfp and "xvhjs dih" was a placeholder name anyway
