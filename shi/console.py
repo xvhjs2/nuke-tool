@@ -13,39 +13,43 @@ class Ascii:
 
     def _ascii(self):
         return f'''
-             _      _           _ _ _     
-__  ____   _| |__  (_)___    __| (_) |__  
-\ \/ /\ \ / / '_ \ | / __|  / _` | | '_ \ 
- >  <  \ V /| | | || \__ \ | (_| | | | | |
-/_/\_\  \_/ |_| |_|/ |___/  \__,_|_|_| |_|
-                 |__/                     
-        
+      ____     _____  ___  __      ___   ___  __ 
+     6MXMMb\  6MMVMMb `MM 6MHb   6MMMMb  `MM 6MS 
+    MD'    ` 6M'   `Mb MIM9 `Mb 8M'  `Hb  MM67 " 
+    YM.      MM     MM MM'   MM     ,oMM  MM'    
+     YMMMMb  MM     MM MM    MM ,6MMo'MM  MM     
+         `Mb MM     MM MM    MM MM'   MM  MM     
+    L    ,MM YM.   ,M9 MM    MM MM.  ,MM  MM     
+    MYMMMM9   YMMMMM9 _MM_  _MM_`YMMMJ'Yb_MM_    
+                                                
+                                                     
 '''
 
     def ascii(self):
         asc = self._ascii()
-        self.banner = Colorate.Horizontal(Colors.blue_to_purple, asc, 1)
+        self.banner = Colorate.Horizontal(Colors.blue_to_cyan, asc, 1)
         return self.banner
+    
     def ascii2(self, text):
         asc = self._ascii() + '\t' + text
-        self.banner = Colorate.Horizontal(Colors.blue_to_purple, asc, 1)
+        self.banner = Colorate.Horizontal(Colors.blue_to_cyan, asc, 1)
         return self.banner
 
 
 class Logging:
     def inp(action, msg):
-        mg = f'''\n┏━[xvhjsdih@{action}] [{msg}]
+        mg = f'''\n┏━[sonar@{action}] [{msg}]
 ┃
 ┃
-┗━[xvhjs2@xvhjsdih]──$  '''
+┗━[sonar]──$  '''
         lock.acquire()
-        inp = input(Colorate.Horizontal(Colors.red_to_purple, mg, 1))
+        inp = input(Colorate.Horizontal(Colors.cyan_to_blue, mg, 1))
         lock.release()
         return inp
     
     def inp2(msg):
         lock.acquire()
-        inp = input(Colorate.Horizontal(Colors.red_to_purple, 'xvhjs2@xvhjsdih >', 1) + " " + Fore.BLUE + 'INPUT ' + Colorate.Horizontal(Colors.red_to_blue, msg, 1))
+        inp = input(Colorate.Horizontal(Colors.cyan_to_blue, '[sonar]──$', 1) + " " + Fore.BLUE + 'INPUT ' + Colorate.Horizontal(Colors.red_to_blue, msg, 1))
         lock.release()
         return inp
     
@@ -54,7 +58,7 @@ class Logging:
         d = now.strftime('%H:%M:%S')
 
         lock.acquire()
-        print(Colorate.Horizontal(Colors.red_to_purple, f'{d} >', 1) + " " + Fore.GREEN + 'SUCCESS ' + Colorate.Horizontal(Colors.red_to_blue, msg, 1))
+        print(Colorate.Horizontal(Colors.cyan_to_blue, f'{d} >', 1) + " " + Fore.GREEN + 'SUCCESS ' + Colorate.Horizontal(Colors.red_to_blue, msg, 1))
 
         lock.release()
         return msg
@@ -64,7 +68,7 @@ class Logging:
         d = now.strftime('%H:%M:%S')
 
         lock.acquire()
-        print(Colorate.Horizontal(Colors.red_to_purple, f'{d} >', 1) + " " + Fore.RED + 'FAILED ' + Colorate.Horizontal(Colors.red_to_blue, msg, 1))
+        print(Colorate.Horizontal(Colors.cyan_to_blue, f'{d} >', 1) + " " + Fore.RED + 'FAILED ' + Colorate.Horizontal(Colors.red_to_blue, msg, 1))
         lock.release()
         return msg
         
@@ -73,7 +77,7 @@ class Logging:
         d = now.strftime('%H:%M:%S')
         
         lock.acquire()
-        print(Colorate.Horizontal(Colors.red_to_purple, f'{d} >', 1) + " " + Fore.YELLOW + 'INFO ' + Colorate.Horizontal(Colors.red_to_blue, msg, 1))
+        print(Colorate.Horizontal(Colors.cyan_to_blue, f'{d} >', 1) + " " + Fore.YELLOW + 'INFO ' + Colorate.Horizontal(Colors.red_to_blue, msg, 1))
         lock.release()
         return msg
     
