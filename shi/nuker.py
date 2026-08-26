@@ -20,7 +20,7 @@ except:
             "ban": False,
             "webhook": False,
             "embed": False,
-            "days": 28
+            "days": 27
         }, f, indent=4)
     with open(config, 'r', encoding='utf-8') as f:
         conf = json.load(f)
