@@ -86,7 +86,7 @@ def interface():
 
     nuke = Nuke(tkn=Nukebot.tkn, server=Nukebot.server, serverid=Nukebot.serverid, wbh='dih', embeds=useembed, ban=ban, webhook=usewebhook)
 
-    ctypes.windll.kernel32.SetConsoleTitleW(f'xvhjs dih | {Nukebot.name} | {Nukebot.server}')
+    ctypes.windll.kernel32.SetConsoleTitleW(f'Sonar | {Nukebot.name} | {Nukebot.server}')
     bnr += Options().options()
     mcb(lines=1)
     cbb()
@@ -377,7 +377,7 @@ def selbot():
             time.sleep(1.5)
 
 def selguild(token):
-    ctypes.windll.kernel32.SetConsoleTitleW(f'xvhjs dih | {Nukebot.name} | Selecting a server')
+    ctypes.windll.kernel32.SetConsoleTitleW(f'Sonar | {Nukebot.name} | Selecting a server')
     while True:
         mcb(lines=1)
         print(Ascii().ascii2(f'TIP: you can type "fnt" for a server id or add the bot using this link:'))
@@ -405,7 +405,7 @@ def selguild(token):
             time.sleep(1)
 
 def main():
-    ctypes.windll.kernel32.SetConsoleTitleW(f'xvhjs dih | Login')
+    ctypes.windll.kernel32.SetConsoleTitleW(f'Sonar | Login')
 
     tk = selbot()
     if tk:
