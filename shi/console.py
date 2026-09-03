@@ -97,7 +97,7 @@ class Options:
             [09] Kick everyone                  [19] Scrape members                              
             [10] Give everyone admin            [20] Delete emojis                 
         '''
-        self.opti = Colorate.Horizontal(Colors.blue_to_purple, self.opt, 1)
+        self.opti = Colorate.Horizontal(Colors.blue_to_cyan, self.opt, 1)
         return self.opti
 
 
