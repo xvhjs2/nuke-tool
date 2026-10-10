@@ -125,6 +125,7 @@ class Nuke:
             name = 'india is tuff 🗿🗿🗿'
         else:
             name = 'incredible gassy saved the day'
+        threads = []
 
         for _ in range(100):
             t = threading.Thread(target=self.createchannel, args=(serverid, name))
@@ -134,6 +135,7 @@ class Nuke:
             t.join()
 
     def CChannels2(self, serverid, name, amount):
+        threads = []
         for _ in range(amount):
             t = threading.Thread(target=self.createchannel, args=(serverid, name))
             t.start()
