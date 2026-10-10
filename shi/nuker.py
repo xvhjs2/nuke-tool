@@ -107,10 +107,10 @@ class Nuke:
         
     def CChannels(self, serverid):
         mc = ['minecraft', 'dream', 'smp', 'lifesteal', 'unstable universe', 'unstable', 'uu', 'bliss', 'strength smp', 'hermitcraft', 'soulbound', 'levels smp', 'parrotx2', 'flamefrags', 'wemmbu', 'mc', 'pvp', 'neth', 'hypixel', 'bedwars', 'skywars', '1.8', '1.9', '1.21', 'zombie', 'creeper', 'skeleton', 'ender', 'enderman', 'wither', 'mace', 'tommyinnit', 'dsmp', 'wifies', 'kenadian', 'escape room', 'wato', 'crystal pvp', 'cpvp', 'animation vs minecraft', 'avm', 'alan becker', 'mcyt']
-        sigma = ['antifurry', 'antilgbt', 'anti lgbt', 'anti furry', 'afu', 'homophobic']
+        sigma = ['antifurry', 'antilgbt', 'anti lgbt', 'anti furry', 'afu', 'homophobic', 'transphobic', 'anti']
         rblx = ["dandy's world", 'gag', 'grow a garden', 'steal a brainrot', 'forsaken', 'pc2', 'pillar chase', 'doors', 'roblox', 'rblx', 'schlep', 'spawnism']
         betrayal = ['gassy', 'diddyblud', 'sigma', 'dih', 'india', 'george floyd', 'george droyd', 'george droid']
-        mibu = ['mr incredible', 'mibu', 'phase', 'template', 'uncanny', 'verst']
+        mibu = ['mr incredible', 'mibu', 'phase', 'template', 'uncanny', 'verst', 'meeboo']
         
         sername = self.server.lower()
         if any(word in sername for word in mc):
@@ -130,13 +130,18 @@ class Nuke:
             t = threading.Thread(target=self.createchannel, args=(serverid, name))
             t.start()
             time.sleep(0.01)
+        for t in threads:
+            t.join()
 
     def CChannels2(self, serverid, name, amount):
         for _ in range(amount):
             t = threading.Thread(target=self.createchannel, args=(serverid, name))
             t.start()
             time.sleep(0.01)
-    
+        for t in threads:
+            t.join()
+
+
     def sendmessage(self, chid, msg, amount):
         payload = {'content': msg}
         embed = self.embed()
