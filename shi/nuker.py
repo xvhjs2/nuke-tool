@@ -105,6 +105,7 @@ class Nuke:
         else:
             Logging.fail('Failed to create channel')
         
+
     def CChannels(self, serverid):
         mc = ['minecraft', 'dream', 'smp', 'lifesteal', 'unstable universe', 'unstable', 'uu', 'bliss', 'strength smp', 'hermitcraft', 'soulbound', 'levels smp', 'parrotx2', 'flamefrags', 'wemmbu', 'mc', 'pvp', 'neth', 'hypixel', 'bedwars', 'skywars', '1.8', '1.9', '1.21', 'zombie', 'creeper', 'skeleton', 'ender', 'enderman', 'wither', 'mace', 'tommyinnit', 'dsmp', 'wifies', 'kenadian', 'escape room', 'wato', 'crystal pvp', 'cpvp', 'animation vs minecraft', 'avm', 'alan becker', 'mcyt']
         sigma = ['antifurry', 'antilgbt', 'anti lgbt', 'anti furry', 'afu', 'homophobic', 'transphobic', 'anti']
@@ -129,20 +130,24 @@ class Nuke:
 
         for _ in range(100):
             t = threading.Thread(target=self.createchannel, args=(serverid, name))
+            threads.append(t)
             t.start()
             time.sleep(0.01)
         for t in threads:
             t.join()
+        return
 
     def CChannels2(self, serverid, name, amount):
         threads = []
         for _ in range(amount):
             t = threading.Thread(target=self.createchannel, args=(serverid, name))
+            threads.append(t)
             t.start()
+
             time.sleep(0.01)
         for t in threads:
             t.join()
-
+        return
 
     def sendmessage(self, chid, msg, amount):
         payload = {'content': msg}
