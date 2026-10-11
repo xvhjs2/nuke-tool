@@ -209,7 +209,7 @@ class Nuke:
             t = threading.Thread(target=self.sendmessage, args=(channel['id'], msg, amount,))
             threads.append(t)
             t.start()
-            time.sleep(0.01)
+            time.sleep(0.11)
         
         for t in threads:
             t.join()
